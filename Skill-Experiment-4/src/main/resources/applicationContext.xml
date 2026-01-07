@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="studentConstructor" class="com.klef.jfsd.exam.Student">
+        <constructor-arg value="101" type="int"/>
+        <constructor-arg value="Ravi Kumar" type="String"/>
+        <constructor-arg value="Computer Science" type="String"/>
+        <constructor-arg value="2" type="int"/>
+    </bean>
+
+    <bean id="studentSetter" class="com.klef.jfsd.exam.Student">
+        <property name="course" value="Electronics"/>
+        <property name="year" value="3"/>
+    </bean>
+
+</beans>
