@@ -1,0 +1,46 @@
+### 1. Test Welcome Message
+GET http://localhost:8080/welcome
+
+### 2. Add a Book (POST)
+POST http://localhost:8080/addbook
+Content-Type: application/json
+
+{
+  "id": "1",
+  "title": "Spring Boot in Action",
+  "author": "Craig Walls",
+  "price": 29.99
+}
+
+### 3. Add Another Book (POST)
+POST http://localhost:8080/addbook
+Content-Type: application/json
+
+{
+  "id": "2",
+  "title": "Effective Java",
+  "author": "Joshua Bloch",
+  "price": 45.00
+}
+
+### 4. View All Books (GET)
+GET http://localhost:8080/viewbooks
+
+### 5. Get Book Titles (GET)
+GET http://localhost:8080/books
+
+### 6. Get Book by ID (GET)
+GET http://localhost:8080/books/1
+
+### 7. Search Book by Title (GET)
+GET http://localhost:8080/search?title=Spring Boot in Action
+
+### 8. Get Author Profile (GET)
+GET http://localhost:8080/author/Craig Walls
+
+### 9. Get Book Count (GET)
+GET http://localhost:8080/count
+
+### 10. Get Static Price (GET)
+    GET http://localhost:8080/price
+

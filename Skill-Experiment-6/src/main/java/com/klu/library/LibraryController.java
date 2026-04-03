@@ -36,7 +36,7 @@ public class LibraryController {
     @GetMapping("/books/{id}")
     public Book getBookById(@PathVariable String id) {
         for (Book book : books) {
-            if (book.getId().equals(id)) {
+            if (book.getId() != null && book.getId().equals(id)) {
                 return book;
             }
         }

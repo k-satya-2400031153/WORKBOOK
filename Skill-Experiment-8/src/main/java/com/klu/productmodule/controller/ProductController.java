@@ -1,5 +1,7 @@
-package com.klu.productmodule;
+package com.klu.productmodule.controller;
 
+import com.klu.productmodule.model.Product;
+import com.klu.productmodule.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +24,15 @@ public class ProductController {
     // Task 4a. /products/category/{category} (Derived Query test)
     @GetMapping("/category/{category}")
     public List<Product> getByCategory(@PathVariable String category) {
-        return productRepository.findByCategory(category);
+        // UPDATED: Calling findByProductCategory instead of findByCategory
+        return productRepository.findByProductCategory(category);
     }
 
     // Task 4b. /products/filter?min=&max= (Derived Query test)
     @GetMapping("/filter")
     public List<Product> getByPriceRange(@RequestParam double min, @RequestParam double max) {
-        return productRepository.findByPriceBetween(min, max);
+        // UPDATED: Calling findByProductPriceBetween instead of findByPriceBetween
+        return productRepository.findByProductPriceBetween(min, max);
     }
 
     // Task 4c. /products/sorted (JPQL Query test)

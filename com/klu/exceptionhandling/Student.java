@@ -1,38 +1,40 @@
 package com.klu.exceptionhandling;
 
-public class Student {
-    private int id;
-    private String name;
-    private String department;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-    public Student(int id, String name, String department) {
-        this.id = id;
-        this.name = name;
-        this.department = department;
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/student")
+public class StudentController {
+
+    // Dummy database testing ke liye
+    private static final Map<Integer, Student> studentDB = new HashMap<>();
+    static {
+        studentDB.put(1, new Student(1, "Aarav", "Computer Science"));
+        studentDB.put(2, new Student(2, "Meera", "Mechanical Engineering"));
     }
 
-    public int getId() {
-        return id;
-    }
+    @GetMapping("/{id}")
+    public Student getStudent(@PathVariable String id) {
+        int studentId;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+        // Task 8: Check for invalid input format (like sending text instead of number)
+        try {
+            studentId = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            throw new InvalidInputException("Invalid format: Student ID must be a number. You entered '" + id + "'");
+        }
 
-    public String getName() {
-        return name;
-    }
+        // Task 2: Throw StudentNotFoundException if ID doesn't exist
+        if (!studentDB.containsKey(studentId)) {
+            throw new StudentNotFoundException("Student not found with ID: " + studentId);
+        }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
+        return studentDB.get(studentId);
     }
 }
-

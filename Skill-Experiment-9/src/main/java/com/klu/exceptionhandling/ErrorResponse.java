@@ -12,8 +12,6 @@ public class ErrorResponse {
         this.message = message;
         this.statusCode = statusCode;
     }
-
-    // Getters and Setters
     public LocalDateTime getTimestamp() { return timestamp; }
     public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
     public String getMessage() { return message; }

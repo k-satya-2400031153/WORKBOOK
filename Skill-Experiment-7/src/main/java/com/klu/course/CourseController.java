@@ -11,63 +11,66 @@ import java.util.Optional;
 @RequestMapping("/courses")
 public class CourseController {
 
-    private final CourseService courseService;
+    private final CourseService service;
 
-    public CourseController(CourseService courseService) {
-        this.courseService = courseService;
+    public CourseController(CourseService service) {
+        this.service = service;
     }
 
+    // Add Course
     @PostMapping
-    public ResponseEntity<String> addCourse(@RequestBody Course course) {
-        if (course.getCourseId() == null || course.getTitle() == null) {
-            return new ResponseEntity<>("Error: Course ID and Title are required", HttpStatus.BAD_REQUEST);
-        }
-        courseService.addCourse(course);
-        return new ResponseEntity<>("Success: Course added successfully", HttpStatus.CREATED);
+    public ResponseEntity<?> addCourse(@RequestBody Course course) {
+        Course savedCourse = service.addCourse(course);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCourse);
     }
 
+    // Get All Courses
     @GetMapping
     public ResponseEntity<List<Course>> getAllCourses() {
-        return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.OK);
+        List<Course> courses = service.getAllCourses();
+        return ResponseEntity.ok(courses);
     }
 
+    // Get Course By ID
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCourseById(@PathVariable String id) {
-        Optional<Course> course = courseService.getCourseById(id);
+    public ResponseEntity<?> getCourseById(@PathVariable Long id) {
+        Optional<Course> course = service.getCourseById(id);
         if (course.isPresent()) {
-            return new ResponseEntity<>(course.get(), HttpStatus.OK);
+            return ResponseEntity.ok(course.get());
         } else {
-            return new ResponseEntity<>("Error: Course not found", HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
         }
     }
 
+    // Update Course
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateCourse(@PathVariable String id, @RequestBody Course updatedCourse) {
-        Course course = courseService.updateCourse(id, updatedCourse);
-        if (course != null) {
-            return new ResponseEntity<>("Success: Course updated successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Error: Course not found for update", HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> updateCourse(@PathVariable Long id, @RequestBody Course course) {
+        try {
+            Course updatedCourse = service.updateCourse(id, course);
+            return ResponseEntity.ok(updatedCourse);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found for update");
         }
     }
 
+    // Delete Course
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCourse(@PathVariable String id) {
-        boolean isRemoved = courseService.deleteCourse(id);
-        if (isRemoved) {
-            return new ResponseEntity<>("Success: Course deleted successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Error: Course not found for deletion", HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> deleteCourse(@PathVariable Long id) {
+        try {
+            service.deleteCourse(id);
+            return ResponseEntity.ok("Course deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
         }
     }
 
+    // Search Course by Title
     @GetMapping("/search/{title}")
-    public ResponseEntity<?> searchCourses(@PathVariable String title) {
-        List<Course> foundCourses = courseService.searchCoursesByTitle(title);
-        if (!foundCourses.isEmpty()) {
-            return new ResponseEntity<>(foundCourses, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Error: No courses found with title containing '" + title + "'", HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> searchCourse(@PathVariable String title) {
+        List<Course> courses = service.searchByTitle(title);
+        if (courses.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No courses found");
         }
+        return ResponseEntity.ok(courses);
     }
 }

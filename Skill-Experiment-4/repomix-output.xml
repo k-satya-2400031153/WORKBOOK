@@ -1,0 +1,243 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.gitignore
+pom.xml
+src/main/java/com/klef/jfsd/exam/AppConfig.java
+src/main/java/com/klef/jfsd/exam/ClientAnnotation.java
+src/main/java/com/klef/jfsd/exam/ClientXML.java
+src/main/java/com/klef/jfsd/exam/Main.java
+src/main/java/com/klef/jfsd/exam/Student.java
+src/main/resources/applicationContext.xml
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".gitignore">
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+.kotlin
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+</file>
+
+<file path="pom.xml">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.klef.jfsd.exam</groupId>
+    <artifactId>Skill-Experiment-4</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.30</version>
+        </dependency>
+    </dependencies>
+</project>
+</file>
+
+<file path="src/main/java/com/klef/jfsd/exam/AppConfig.java">
+package com.klef.jfsd.exam;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AppConfig {
+    @Bean(name = "studentBean")
+    public Student student() {
+        return new Student(202, "Sita Ram", "Information Technology", 4);
+    }
+}
+</file>
+
+<file path="src/main/java/com/klef/jfsd/exam/ClientAnnotation.java">
+package com.klef.jfsd.exam;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+public class ClientAnnotation {
+    public static void main(String[] args) {
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        System.out.println("--- Annotation Configuration Output ---");
+        Student s = (Student) context.getBean("studentBean");
+        System.out.println(s.toString());
+    }
+}
+</file>
+
+<file path="src/main/java/com/klef/jfsd/exam/ClientXML.java">
+package com.klef.jfsd.exam;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+public class ClientXML {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        System.out.println("--- Constructor Injection Output ---");
+        Student s1 = (Student) context.getBean("studentConstructor");
+        System.out.println(s1.toString());
+        System.out.println("--- Setter Injection Output ---");
+        Student s2 = (Student) context.getBean("studentSetter");
+        System.out.println(s2.toString());
+    }
+}
+</file>
+
+<file path="src/main/java/com/klef/jfsd/exam/Main.java">
+package com.klef.jfsd.exam;
+
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class Main {
+    public static void main(String[] args) {
+        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
+        // to see how IntelliJ IDEA suggests fixing it.
+        System.out.printf("Hello and welcome!");
+
+        for (int i = 1; i <= 5; i++) {
+            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
+            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
+            System.out.println("i = " + i);
+        }
+    }
+}
+</file>
+
+<file path="src/main/java/com/klef/jfsd/exam/Student.java">
+package com.klef.jfsd.exam;
+public class Student {
+    private int studentId;
+    private String name;
+    private String course;
+    private int year;
+    public Student() {
+    }
+    public Student(int studentId, String name, String course, int year) {
+        this.studentId = studentId;
+        this.name = name;
+        this.course = course;
+        this.year = year;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+    @Override
+    public String toString() {
+        return "Student Details [ID=" + studentId + ", Name=" + name + ", Course=" + course + ", Year=" + year + "]";
+    }
+}
+</file>
+
+<file path="src/main/resources/applicationContext.xml">
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="studentConstructor" class="com.klef.jfsd.exam.Student">
+        <constructor-arg value="101" type="int"/>
+        <constructor-arg value="Ravi Kumar" type="String"/>
+        <constructor-arg value="Computer Science" type="String"/>
+        <constructor-arg value="2" type="int"/>
+    </bean>
+
+    <bean id="studentSetter" class="com.klef.jfsd.exam.Student">
+        <property name="course" value="Electronics"/>
+        <property name="year" value="3"/>
+    </bean>
+
+</beans>
+</file>
+
+</files>

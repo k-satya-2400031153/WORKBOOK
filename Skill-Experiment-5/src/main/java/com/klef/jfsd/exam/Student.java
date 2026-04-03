@@ -14,7 +14,7 @@ public class Student {
     // Default Constructor
     public Student() {
         this.id = 101;
-        this.name = "K. Satya";
+        this.name = "Sai Charan";
         this.gender = "Male";
     }
 
