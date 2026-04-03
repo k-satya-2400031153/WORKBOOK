@@ -1,11 +1,11 @@
 import React from 'react';
-import axios from 'axios';
+import api from '../api';
 
 const StudentList = ({ students, refreshList, setEditingStudent }) => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/students/${id}`);
+            await api.delete(`/students/${id}`);
             refreshList();
         } catch (error) {
             console.error("Error deleting student", error);

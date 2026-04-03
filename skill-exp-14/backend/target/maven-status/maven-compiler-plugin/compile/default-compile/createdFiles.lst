@@ -1,0 +1,7 @@
+com\auth\backend\model\User.class
+com\auth\backend\service\UserService.class
+com\auth\backend\AuthBackendApplication.class
+com\auth\backend\repository\UserRepository.class
+com\auth\backend\dto\RegisterRequest.class
+com\auth\backend\controller\UserController.class
+com\auth\backend\dto\LoginRequest.class

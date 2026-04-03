@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 const AddStudent = ({ refreshList, editingStudent, setEditingStudent }) => {
     const [student, setStudent] = useState({ name: '', email: '', course: '' });
@@ -17,10 +17,10 @@ const AddStudent = ({ refreshList, editingStudent, setEditingStudent }) => {
         e.preventDefault();
         try {
             if (editingStudent) {
-                await axios.put(`http://localhost:8080/students/${editingStudent.id}`, student);
+                await api.put(`/students/${editingStudent.id}`, student);
                 setEditingStudent(null);
             } else {
-                await axios.post('http://localhost:8080/students', student);
+                await api.post('/students', student);
             }
             setStudent({ name: '', email: '', course: '' });
             refreshList();
