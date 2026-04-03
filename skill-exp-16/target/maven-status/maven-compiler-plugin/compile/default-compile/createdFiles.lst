@@ -1,0 +1,4 @@
+com\studentapi\config\SwaggerConfig.class
+com\studentapi\model\Student.class
+com\studentapi\StudentApplication.class
+com\studentapi\controller\StudentController.class
