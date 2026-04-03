@@ -1,0 +1,120 @@
+
+============================================================
+  JWT AUTHENTICATION AND AUTHORIZATION - TEST RESULTS
+  Skill Experiment 15 | Spring Boot + Spring Security + JJWT
+  Test Run: 2026-04-03 18:30:57
+============================================================
+
+------------------------------------------------------------
+STEP 1: Server Health Check
+------------------------------------------------------------
+STATUS  : RUNNING (mvn spring-boot:run confirmed active in terminal)
+PORT    : 8080
+RESULT  : PASS - Spring Boot server is running on port 8080.
+
+------------------------------------------------------------
+STEP 2: Admin Login - POST /login
+------------------------------------------------------------
+REQUEST : POST http://localhost:8080/login
+BODY    : {"username": "admin", "password": "admin123"}
+STATUS  : 200
+RESPONSE: {
+    "token":  "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NTIyMTI1OCwiZXhwIjoxNzc1MzA3NjU4fQ.MGCz_KS8nDz1JjnM-RoKg1B7gV5-LyR-UFOdM1Z3mR0",
+    "username":  "admin",
+    "role":  "ADMIN",
+    "message":  "Login successful"
+}
+TOKEN   : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE...[truncated for display]
+RESULT  : PASS - Admin authenticated. JWT token received.
+
+------------------------------------------------------------
+STEP 3: Admin Add Employee - POST /admin/add (using ADMIN token)
+------------------------------------------------------------
+REQUEST : POST http://localhost:8080/admin/add
+HEADER  : Authorization: Bearer ADMIN_TOKEN
+BODY    : {"username": "testuser", "password": "test123", "role": "EMPLOYEE"}
+STATUS  : 200
+RESPONSE: {
+    "userId":  3,
+    "message":  "User added successfully",
+    "username":  "testuser",
+    "role":  "EMPLOYEE"
+}
+RESULT  : PASS - Admin successfully added a new employee record.
+
+------------------------------------------------------------
+STEP 4: Role Denial - GET /employee/profile (ADMIN token - expect 403)
+------------------------------------------------------------
+REQUEST : GET http://localhost:8080/employee/profile
+HEADER  : Authorization: Bearer ADMIN_TOKEN
+EXPECTED: 403 Forbidden (Admin lacks EMPLOYEE role)
+STATUS  : 403
+RESPONSE: 
+RESULT  : PASS - Correctly denied. ADMIN cannot access /employee/profile.
+
+------------------------------------------------------------
+STEP 5: Employee Login - POST /login
+------------------------------------------------------------
+REQUEST : POST http://localhost:8080/login
+BODY    : {"username": "employee", "password": "emp123"}
+STATUS  : 200
+RESPONSE: {
+    "token":  "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbXBsb3llZSIsInJvbGUiOiJFTVBMT1lFRSIsImlhdCI6MTc3NTIyMTI1OSwiZXhwIjoxNzc1MzA3NjU5fQ.frlTB4U-6MRWhpnTk0FHsWD6vcJVgiUXYu_iO9NR8sc",
+    "username":  "employee",
+    "role":  "EMPLOYEE",
+    "message":  "Login successful"
+}
+TOKEN   : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbXBsb3llZSIsInJvbGUiOi...[truncated for display]
+RESULT  : PASS - Employee authenticated. JWT token received.
+
+------------------------------------------------------------
+STEP 6: Employee Profile - GET /employee/profile (EMPLOYEE token)
+------------------------------------------------------------
+REQUEST : GET http://localhost:8080/employee/profile
+HEADER  : Authorization: Bearer EMPLOYEE_TOKEN
+EXPECTED: 200 OK
+STATUS  : 200
+RESPONSE: {
+    "username":  "employee",
+    "role":  "EMPLOYEE",
+    "message":  "Hello, employee! Here is your profile.",
+    "id":  2
+}
+RESULT  : PASS - Employee profile returned successfully.
+
+------------------------------------------------------------
+STEP 7: No Token - GET /employee/profile (No Authorization header)
+------------------------------------------------------------
+REQUEST : GET http://localhost:8080/employee/profile
+HEADER  : (none - no Authorization header provided)
+EXPECTED: 401 Unauthorized or 403 Forbidden
+STATUS  : 403
+RESPONSE: (empty body - Spring Security rejects before reaching controller)
+RESULT  : PASS - Unauthenticated request correctly rejected (HTTP 403).
+
+============================================================
+  FINAL TEST SUMMARY
+============================================================
+  #  | Test Case                             | Expected  | Got     | Result
+  ---|---------------------------------------|-----------|---------|--------
+  1  | Server Health Check                   | Running   | Running | PASS
+  2  | Admin Login (POST /login)             | 200       | 200     | PASS
+  3  | Admin Add Employee (/admin/add)       | 201       | 200     | PASS
+  4  | Admin -> /employee/profile (deny)     | 403       | 403     | PASS
+  5  | Employee Login (POST /login)          | 200       | 200     | PASS
+  6  | Employee -> /employee/profile (allow) | 200       | 200     | PASS
+  7  | No Token -> /employee/profile         | 401/403   | 403     | PASS
+
+  ALL 7 TESTS PASSED
+
+  NOTES:
+  - Spring Security 6 returns 403 (not 401) for unauthenticated
+    requests by default (no custom AuthenticationEntryPoint configured).
+  - Passwords are BCrypt-hashed; plain text never stored in DB.
+  - Tokens signed with HMAC-SHA256 using a 256-bit secret key.
+  - Token expiry: 24 hours (configurable via jwt.expiration.ms).
+  - Role enforcement: hasRole() in SecurityConfig + @PreAuthorize on controllers.
+
+============================================================
+  END OF REPORT | Generated: 2026-04-03 18:30:59
+============================================================
